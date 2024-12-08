@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-response-tools"
+version = "0.1.0"
+description = "A tool to query OpenAI and parse responses."
+authors = [
+  { name="Yugen Okei", email="omerkorat@gmail.com" }
+]
+license = { text = "MIT" }
+dependencies = [
+    "chompjs",
+    "jsonschema",
+    "openai",
+    "diskcache",
+    "lbgpt",
+    "tornado",
+    "tenacity",
+    "langchain_community"
+]
