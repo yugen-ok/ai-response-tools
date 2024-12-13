@@ -26,13 +26,13 @@
 - Python 3.8 or later
 - API keys for OpenAI or Azure OpenAI
 
-### Remote Instsallation
+### Remote Installation
 
    ```
    pip install git+https://github.com/yugen-ok/ai-response-tools.git 
    ```
 
-### Installation Steps (from source)
+### Local Installation
 1. Clone the repository or download the package.
 2. Install the package using pip:
    ```bash
