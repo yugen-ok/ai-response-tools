@@ -21,3 +21,6 @@ dependencies = [
     "tenacity",
     "langchain_community"
 ]
+
+packages = ["ai_response_tools"]
+package_dir = {"" = "src"}
