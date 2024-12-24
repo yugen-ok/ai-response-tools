@@ -19,6 +19,7 @@ dependencies = [
     "tornado",
     "tenacity",
     "qdrant_client",
+    "nest_asyncio",
     "langchain_community"
 ]
 
