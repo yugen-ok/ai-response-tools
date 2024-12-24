@@ -6,4 +6,5 @@ __pycache__/
 dist/
 build/
 .venv/
-src/lbgpt_cache
+src/lbgpt_cache/
+lbgpt_cach/

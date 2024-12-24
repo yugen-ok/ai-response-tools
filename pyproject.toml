@@ -18,6 +18,7 @@ dependencies = [
     "lbgpt",
     "tornado",
     "tenacity",
+    "qdrant_client",
     "langchain_community"
 ]
 
