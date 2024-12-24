@@ -16,9 +16,8 @@ dependencies = [
     "openai",
     "diskcache",
     "lbgpt",
+    "lbgpt_cache",
     "tornado",
     "tenacity",
     "langchain_community"
 ]
-
-packages = ["ai_response_tools", "lbgpt_cache"]
