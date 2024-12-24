@@ -20,6 +20,7 @@ dependencies = [
     "tenacity",
     "qdrant_client",
     "nest_asyncio",
+    "cachetools",
     "langchain_community"
 ]
 
