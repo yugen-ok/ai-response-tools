@@ -20,3 +20,5 @@ dependencies = [
     "tenacity",
     "langchain_community"
 ]
+
+packages = ["ai_response_tools", "lbgpt_cache"]
