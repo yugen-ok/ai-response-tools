@@ -1,3 +1,4 @@
+
 # AI Response Tools
 
 **AI Response Tools** is a Python package designed to simplify querying OpenAI and Azure OpenAI language models and parsing their responses into structured Python objects. It provides a streamlined interface for generating responses and validating their structure using JSON schemas.
@@ -157,6 +158,38 @@ Install dependencies with:
 ```bash
 pip install -r requirements.txt
 ```
+
+---
+
+## **Troubleshooting**
+
+### Windows: Chompjs Installation Error
+
+If you encounter this error when installing the package:
+
+```
+Building wheel for chompjs (setup.py) ... error
+error: Microsoft Visual C++ 14.0 or greater is required. Get it with "Microsoft C++ Build Tools"
+```
+
+This occurs because `chompjs` requires C++ compilation. You have two options to resolve this:
+
+#### Option 1: Install Visual C++ Build Tools (Recommended)
+1. Download Microsoft Visual C++ Build Tools from [https://visualstudio.microsoft.com/visual-cpp-build-tools/](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
+2. Run the installer.
+3. Select **Desktop development with C++**.
+4. Complete the installation.
+5. Retry installing `chompjs`:
+   ```bash
+   pip install chompjs
+   ```
+
+#### Option 2: Use Alternative Packages
+If you prefer to avoid C++ compilation, you can use alternative JSON parsing packages like:
+- `hjson`
+- `demjson3`
+
+**Note:** Using alternative packages will require code modifications.
 
 ---
 

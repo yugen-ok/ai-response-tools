@@ -21,6 +21,7 @@ dependencies = [
     "qdrant_client",
     "nest_asyncio",
     "cachetools",
+    "asyncio",
     "langchain_community"
 ]
 

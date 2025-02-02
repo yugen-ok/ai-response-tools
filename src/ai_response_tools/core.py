@@ -51,7 +51,7 @@ def query_lbgpt(
         user_prompts: list[str],
         image_urls: list[str] = None,
         model: str = 'gpt-4o',
-        temperature: float = 0.7,
+        temperature: float = 0.,
         max_tokens: int = 4000,
         use_azure: bool = True,
         cache=None
