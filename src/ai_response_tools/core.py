@@ -45,19 +45,25 @@ def is_url(path):
         return False
 
 
+import os
+import lbgpt
+import openai
+import logging
+
 
 def query_lbgpt(
         system_prompt: str,
         user_prompts: list[str],
         image_urls: list[str] = None,
         model: str = 'gpt-4o',
-        temperature: float = 0.,
+        temperature: float = 0.7,
         max_tokens: int = 4000,
         use_azure: bool = True,
         cache=None
 ) -> list[str]:
     """
     Query a language model (Azure or OpenAI) via lbgpt with optional image support.
+    Handles exceptions gracefully so that a failure in one request doesn't break the whole process.
 
     Parameters:
         system_prompt (str): The system-level instruction to guide the model.
@@ -74,48 +80,37 @@ def query_lbgpt(
         list[str]: A list of generated responses from the model, one per prompt.
     """
 
+    logging.basicConfig(level=logging.ERROR)
+
     # Setup client
-    if use_azure:
-        lbgpt_client = lbgpt.AzureGPT(
-            api_key=os.getenv("AZURE_OPENAI_API_KEY"),
-            azure_api_base=os.getenv("AZURE_OPENAI_ENDPOINT"),
-            azure_model_map={model: model},
-            max_parallel_calls=100,
-            cache=cache
-        )
-    else:
-        lbgpt_client = lbgpt.ChatGPT(
-            api_key=openai.api_key,
-            max_parallel_calls=100,
-            cache=cache
-        )
+    try:
+        if use_azure:
+            lbgpt_client = lbgpt.AzureGPT(
+                api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+                azure_api_base=os.getenv("AZURE_OPENAI_ENDPOINT"),
+                azure_model_map={model: model},
+                max_parallel_calls=100,
+                cache=cache
+            )
+        else:
+            lbgpt_client = lbgpt.ChatGPT(
+                api_key=openai.api_key,
+                max_parallel_calls=100,
+                cache=cache
+            )
+    except Exception as e:
+        logging.error(f"Failed to initialize lbgpt client: {e}")
+        return ["Error initializing GPT client"] * len(user_prompts)
 
     # Validate image and prompt alignment
     if image_urls:
         assert len(user_prompts) == len(image_urls), "Number of prompts and image URLs must match"
-        # Construct requests with image
-        oi_requests = []
-        for prompt, image_url in zip(user_prompts, image_urls):
-            oi_requests.append({
-                "model": model,
-                "temperature": temperature,
-                "max_tokens": max_tokens,
-                "messages": [
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": [
-                        {"type": "text", "text": prompt},
-                        {
-                            "type": "image_url",
-                            "image_url": {"url": image_path_or_url_to_url(image_url)}
-                        },
-                    ]}
-                ],
-            })
-    else:
-        # Construct requests without image
-        oi_requests = []
-        for prompt in user_prompts:
-            oi_requests.append({
+
+    responses = []
+
+    for i, prompt in enumerate(user_prompts):
+        try:
+            request_data = {
                 "model": model,
                 "temperature": temperature,
                 "max_tokens": max_tokens,
@@ -123,13 +118,22 @@ def query_lbgpt(
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": [{"type": "text", "text": prompt}]}
                 ],
-            })
+            }
 
-    # Send requests and get responses
-    responses = lbgpt_client.chat_completion_list(oi_requests, show_progress=False)
+            if image_urls:
+                request_data["messages"][1]["content"].append({
+                    "type": "image_url",
+                    "image_url": {"url": image_path_or_url_to_url(image_urls[i])}
+                })
 
-    # Extract message content from responses
-    return [res.choices[0].message.content for res in responses]
+            response = lbgpt_client.chat_completion_list([request_data], show_progress=False)
+            responses.append(response[0].choices[0].message.content)
+
+        except Exception as e:
+            logging.error(f"Error processing prompt {i}: {e}")
+            responses.append(f"Error processing prompt {i}")
+
+    return responses
 
 
 def chatgpt_raw_response_parsing(
