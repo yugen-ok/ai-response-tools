@@ -67,7 +67,7 @@ def query_lbgpt(
 
     Parameters:
         system_prompt (str): The system-level instruction to guide the model.
-        user_prompts (list[str]): A list of user prompts (one prompt per request).
+        user_prompts (list[str], optional): A list of user prompts (one prompt per request). If not provided, only the system prompt will be used.
         image_urls (list[str], optional): A list of image URLs corresponding to each user prompt.
                                           If provided, must be the same length as user_prompts.
         model (str): The model name, defaults to 'gpt-4o'.
