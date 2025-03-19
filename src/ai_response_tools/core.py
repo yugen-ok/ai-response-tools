@@ -53,7 +53,7 @@ import logging
 
 def query_lbgpt(
         system_prompt: str,
-        user_prompts: list[str],
+        user_prompts: list[str] = None,
         image_urls: list[str] = None,
         model: str = 'gpt-4o',
         temperature: float = 0.7,
@@ -79,6 +79,9 @@ def query_lbgpt(
     Returns:
         list[str]: A list of generated responses from the model, one per prompt.
     """
+
+    if user_prompts is None:
+        user_prompts = [""]
 
     logging.basicConfig(level=logging.ERROR)
 
