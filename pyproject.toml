@@ -22,7 +22,8 @@ dependencies = [
     "nest_asyncio",
     "cachetools",
     "asyncio",
-    "langchain_community"
+    "langchain_community",
+    "litellm<1.67"
 ]
 
 [tool.setuptools]
